@@ -1,0 +1,141 @@
+---
+title: "glossary"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{glossary}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Setup
+
+```{r setup}
+library(glossary)
+```
+
+
+## Definition File
+
+Set the default path to the definition file.
+
+```{r}
+glossary_path("glossary.yml")
+```
+
+### Definition YAML File
+
+You can store definitions in a YAML file. Use markdown to create paragraphs, links, and lists. Make sure each new line in a definition is indented two spaces (sorry YAML is a bit picky, but it's the best human-editable solution).
+
+```
+SESOI: |
+  Smallest Effect Size of Interest: the smallest effect that is theoretically or practically meaningful
+
+  See [Equivalence Testing for Psychological Research](https://doi.org/10.1177/2515245918770963) for a tutorial on methods for choosing an SESOI.
+p-value: |
+  The probability of the observed data, or more extreme data, if the null hypothesis is true. The lower the p-value, the higher the test statistic, and less likely it is to observe the data if the null hypothesis is true.
+```
+
+### Add Definitions with Code
+
+Alternatively, you can add definitions to the file with code. You don't need to indent new lines if you add definitions this way.
+
+```{r, eval = FALSE}
+glossary_add(term = "power",
+             def = "The probability of rejecting the null hypothesis when it is false, for a specific analysis, effect size, sample size, and criteria for significance."
+")
+```
+
+### PsyTeachR Glossary
+
+If you want to use the [PsyTeachR Glossary](https://psyteachr.github.io/glossary/), set the path to "psyteachr". This will produce links to the online glossary when you click on the term, so it's best to use with the "hover" popup type (see below).
+
+```{r}
+glossary_path("psyteachr")
+glossary_popup("hover")
+```
+
+`r glossary("absolute path")`
+
+
+```{r, echo = FALSE}
+# reset for rest of page
+glossary_path("glossary.yml")
+```
+
+
+## Popup Type
+
+Set the popup type with `glossary_popup()`; options are "click" (default), "hover", and "none".
+
+```{r}
+glossary_popup("none")
+```
+
+`r glossary("alpha")`
+
+```{r}
+glossary_popup("hover")
+```
+
+`r glossary("alpha")`
+
+```{r}
+glossary_popup("click")
+```
+
+`r glossary("alpha")`
+
+## Style
+
+If your popup type is "click", you must add a style with the `glossary_style()` function for the popups to work. If you set the popup type to "hover", or "none", you can omit this and the in-text glossary terms will be styled like other links in your document.
+
+Set the style at the top of your document (set the code chunk to `results='asis'`). The code below shows the default options.
+
+```{r, results='asis'}
+glossary_style(color = "purple", 
+               text_decoration = "underline",
+               def_bg = "#333",
+               def_color = "white")
+```
+
+Alternatively, you can add your own CSS to your document (inline or in an external linked file) to create a more customised appearance. Just copy the text returned by the `glossary_style()` function and customise it.
+
+```{r, eval = FALSE}
+# append default styles to an external CSS file
+write(glossary_style(), "glossary.css", append = TRUE)
+```
+
+
+## In-Text Terms
+
+There are a few ways to customise the glossary term display.
+
+* Look up a term from the glossary file with `glossary("alpha")`: `r glossary("alpha")`
+
+* Display a different value for the term with `glossary("alpha", "$\\alpha$")`: `r glossary("alpha", "$\\alpha$")`
+
+* Use an inline definition instead of the glossary file with `glossary("beta", def = "The second letter of the Greek alphabet")`: `r glossary("beta", def = "The second letter of the Greek alphabet")`
+
+* Just show the term (no hover) with `glossary("effect size", show = "term")`: `r glossary("effect size", show = "term")`
+
+* Just show the definition with `glossary("p-value", show = "def")`: `r glossary("p-value", show = "def")`
+
+## Glossary Table
+
+Show the table of terms defined on this page (or since the last reset) with `glossary_table()`:
+
+```{r, echo = FALSE}
+glossary_table()
+```
+
+You can reset the glossary table between sections with `glossary_reset()`.
+
+
+
